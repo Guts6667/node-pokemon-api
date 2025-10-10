@@ -1,0 +1,27 @@
+{
+  "name": "pokemon-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Guts6667/node-pokemon-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Guts6667/node-pokemon-api/issues"
+  },
+  "homepage": "https://github.com/Guts6667/node-pokemon-api#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "serve-favicon": "^2.5.1"
+  },
+  "devDependencies": {
+    "morgan": "^1.10.1",
+    "nodemon": "^3.1.10"
+  }
+}
