@@ -1,12 +1,54 @@
 const express = require("express");
+const { Sequelize, DataTypes } = require("sequelize");
 const { sucess, getUniqueId } = require("./src/utils/helper");
 const morgan = require("morgan");
 const favicon = require("serve-favicon");
+const pokemonModel = require("./src/models/pokemons");
+
 let pokemons = require("./src/db/mock-pokemon");
 
 const app = express();
 
 const port = 3000;
+
+const sequelize = new Sequelize("pokedex", "root", "root", {
+  host: "localhost",
+  port: 8889,
+  dialect: "mariadb",
+  dialectOptions: {
+    timezone: "Etc/GMT-2",
+  },
+  logging: false,
+});
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connection has been established successfully.");
+  })
+  .catch((err) => {
+    console.error("Unable to connect to the database:", err);
+  });
+
+const pokemon = pokemonModel(sequelize, DataTypes);
+
+sequelize.sync({ force: false }).then(() => {
+  console.log("All models were synchronized successfully.");
+
+  pokemons.map((item) => {
+    pokemon
+      .create({
+        name: item.name,
+        hp: item.hp,
+        cp: item.cp,
+        picture: item.picture,
+        types: item.types.join(),
+      })
+      .then((newPokemon) => {
+        console.log(newPokemon.toJSON());
+      });
+  });
+});
 
 app.get("/", (req, res) => res.send("Hello Express 🥳 2!"));
 
