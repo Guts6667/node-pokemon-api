@@ -1,3 +1,4 @@
+const { ValidationError } = require("sequelize");
 const { Pokemon } = require("../db/sequelize");
 
 // Export a function that takes the Express app as an argument and sets up the route to update a pokemon
@@ -27,8 +28,13 @@ module.exports = (app) => {
           res.json({ message, data: pokemon });
         });
       })
-      // If there is an error, return a 500 error
+
       .catch((error) => {
+        // If the error is a validation error, return a 400 error
+        if (error instanceof ValidationError) {
+          return res.status(400).json({ message: error.message, data: error });
+        }
+        // If the error is not a validation error, return a 500 error
         const message =
           "The pokemon couldn't be updated. Please try again later.";
         res.status(500).json({ message, data: error });

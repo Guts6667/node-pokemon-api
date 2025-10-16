@@ -11,6 +11,25 @@ module.exports = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: {
+          msg: "The pokemon name must be unique.",
+        },
+        validate: {
+          notEmpty: {
+            msg: "The name field cannot be empty.",
+          },
+          notNull: {
+            msg: "The name field is required.",
+          },
+          min: {
+            args: [3],
+            msg: "The name must be at least 3 characters long.",
+          },
+          max: {
+            args: [25],
+            msg: "The name must be at most 25 characters long.",
+          },
+        },
       },
       hp: {
         type: DataTypes.INTEGER,
@@ -22,15 +41,47 @@ module.exports = (sequelize, DataTypes) => {
               msg: "The hp field is required",
             },
           },
+          min: {
+            args: [0],
+            msg: "The hp must be at least 0.",
+          },
+          max: {
+            args: [999],
+            msg: "The hp must be at most 999.",
+          },
         },
-      },
-      cp: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
+        cp: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+          validate: {
+            isInt: {
+              msg: "The value for cp must be an integer",
+              notNull: {
+                msg: "The cp field is required",
+              },
+            },
+            min: {
+              args: [0],
+              msg: "The cp must be at least 0.",
+            },
+            max: {
+              args: [99],
+              msg: "The cp must be at most 99.",
+            },
+          },
+        },
       },
       picture: {
         type: DataTypes.STRING,
         allowNull: false,
+        validate: {
+          isUrl: {
+            msg: "The picture field must be a valid URL.",
+          },
+          notNull: {
+            msg: "The picture field is required.",
+          },
+        },
       },
       types: {
         type: DataTypes.STRING,
