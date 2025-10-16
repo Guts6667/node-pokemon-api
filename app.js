@@ -21,6 +21,14 @@ require("./src/routes/createPokemon")(app);
 require("./src/routes/updatePokemon")(app);
 require("./src/routes/deletePokemon")(app);
 
+// Adding routes handling errors
+// 404 Not Found Express will execute this function if no route has been matched (i.e. no endpoint has been found).
+
+app.use(({ res }) => {
+  const message = "Cannot find this resource. Please try another URL.";
+  res.status(404).json({ message });
+});
+
 app.listen(port, () =>
   console.log(`Node app started on: http://localhost:${port}`)
 );

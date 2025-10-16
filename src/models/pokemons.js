@@ -1,4 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
+  // Define the Pokemon model with its attributes and options
   return sequelize.define(
     "Pokemon",
     {
@@ -14,6 +15,14 @@ module.exports = (sequelize, DataTypes) => {
       hp: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        validate: {
+          isInt: {
+            msg: "The value for hp must be an integer",
+            notNull: {
+              msg: "The hp field is required",
+            },
+          },
+        },
       },
       cp: {
         type: DataTypes.INTEGER,
