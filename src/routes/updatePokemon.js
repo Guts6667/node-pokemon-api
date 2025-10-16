@@ -1,4 +1,4 @@
-const { ValidationError } = require("sequelize");
+const { ValidationError, UniqueConstraintError } = require("sequelize");
 const { Pokemon } = require("../db/sequelize");
 
 // Export a function that takes the Express app as an argument and sets up the route to update a pokemon
@@ -32,6 +32,10 @@ module.exports = (app) => {
       .catch((error) => {
         // If the error is a validation error, return a 400 error
         if (error instanceof ValidationError) {
+          return res.status(400).json({ message: error.message, data: error });
+        }
+        // Check if the error is a UniqueConstraintError
+        if (error instanceof UniqueConstraintError) {
           return res.status(400).json({ message: error.message, data: error });
         }
         // If the error is not a validation error, return a 500 error

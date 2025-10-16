@@ -1,3 +1,15 @@
+const validTypes = [
+  "Plante",
+  "Poison",
+  "Feu",
+  "Eau",
+  "Insecte",
+  "Vol",
+  "Normal",
+  "Electrik",
+  "Fée",
+];
+
 module.exports = (sequelize, DataTypes) => {
   // Define the Pokemon model with its attributes and options
   return sequelize.define(
@@ -95,6 +107,26 @@ module.exports = (sequelize, DataTypes) => {
           // Transforme le tableau en chaîne de caractères en se basant sur les virgules (,).
           // The join function automatically creates a string from an array based on a separator.
           this.setDataValue("types", types.join());
+        },
+        validate: {
+          isTypesValid(value) {
+            if (!value) {
+              throw new Error("The types field is required.");
+            }
+            const types = value.split(",");
+            if (types.length > 3) {
+              throw new Error("A pokemon must have between 1 and 3 types.");
+            }
+            value.split(",").forEach((type) => {
+              if (!validTypes.includes(type)) {
+                throw new Error(
+                  `The type must be one of the following: ${validTypes.join(
+                    ", "
+                  )}.`
+                );
+              }
+            });
+          },
         },
       },
     },

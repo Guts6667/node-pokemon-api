@@ -1,4 +1,4 @@
-const { ValidationError } = require("sequelize");
+const { ValidationError, UniqueConstraintError } = require("sequelize");
 const { Pokemon } = require("../db/sequelize");
 
 module.exports = (app) => {
@@ -14,6 +14,9 @@ module.exports = (app) => {
         // In other words, this line checks if the error that occurred during the creation of the Pokemon instance is specifically a validation error.
         // If it is, the code will handle it differently (by returning a 400 status code and the error message) compared to other types of errors (which will return a 500 status code).
         if (error instanceof ValidationError) {
+          return res.status(400).json({ message: error.message, data: error });
+        }
+        if (error instanceof UniqueConstraintError) {
           return res.status(400).json({ message: error.message, data: error });
         }
         const message =
