@@ -20,6 +20,7 @@ require("./src/routes/findPokemonByPk")(app);
 require("./src/routes/createPokemon")(app);
 require("./src/routes/updatePokemon")(app);
 require("./src/routes/deletePokemon")(app);
+require("./src/routes/login")(app);
 
 // Adding routes handling errors
 // 404 Not Found Express will execute this function if no route has been matched (i.e. no endpoint has been found).
